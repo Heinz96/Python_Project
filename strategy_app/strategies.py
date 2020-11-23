@@ -4,7 +4,6 @@ from .models.strategy import *
 
 main = Blueprint("main", __name__)
 
-Strats = Strategy.objects
 
 @main.route("/")
 def hello_world():

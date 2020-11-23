@@ -15,3 +15,5 @@ class Strategy(Document):
 	image = StringField(required=False)
 	description = StringField(required=False)
 	comments = ListField(EmbeddedDocumentField(Comment))
+
+Strats = Strategy.objects

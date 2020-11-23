@@ -3,6 +3,7 @@ import random
 from .extensions import *
 from flask_bootstrap import Bootstrap
 from .strategies import main
+from .comments import second
 
 
 
@@ -12,7 +13,7 @@ mongo.init_app(app)
 Bootstrap(app)
 
 app.register_blueprint(main)
-
+app.register_blueprint(second, url_prefix="/strategies/<_id>/comments")
   
 
 if __name__ == '__main__':
