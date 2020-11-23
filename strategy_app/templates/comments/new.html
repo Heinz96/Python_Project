@@ -7,9 +7,9 @@
 		<h1 style="text-align: center;">Add New Comment to {{Strat.name}}</h1>
 		
 		<div style="width:30%; margin: 30px auto;">
-			<form action="/campgrounds/{{Strat.id}}/comments" method="POST">
+			<form action="/strategies/{{Strat.id}}/comments" method="POST">
 				<div class="form-group">
-					<input class="form-control" type="text" name="comment[text]" placeholder="text">
+					<input class="form-control" type="text" name="content" placeholder="text">
 				</div>
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit!</button>

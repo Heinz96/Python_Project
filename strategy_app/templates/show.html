@@ -31,6 +31,25 @@
 					<a class="btn btn-success" href="/strategies/{{strat.id}}/comments/new" >Add New Comment!</a>
 				</div>
 				<hr>
+				{% for comment in strat.comments: %}
+					<div class="row">
+						<div class="col-md-12">
+							<strong>{{strat.name}}</strong>
+							<span class="pull-right">10 days ago</span>
+							<div class="text-right">
+								<span class="pull-left">{{comment.content}}</span>
+								{% if True:%}
+									<a class="btn btn-warning btn-xs" href="/strategies/{{strat.id}}/comments/{{comment.id}}/edit" >Edit Comment!</a>
+									<form id="delete-form" action="/strategies/{{strat.id}}/comments/{{comment.id}}" method="POST">
+										<button class="btn btn-danger btn-xs">
+											Delete comment
+										</button>
+									</form>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
