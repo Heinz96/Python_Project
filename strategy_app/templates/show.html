@@ -40,7 +40,7 @@
 								<span class="pull-left">{{comment.content}}</span>
 								{% if True:%}
 									<a class="btn btn-warning btn-xs" href="/strategies/{{strat.id}}/comments/{{comment.id}}/edit" >Edit Comment!</a>
-									<form id="delete-form" action="/strategies/{{strat.id}}/comments/{{comment.id}}" method="POST">
+									<form id="delete-form" action="/strategies/{{strat.id}}/comments/{{comment.id}}/delete" method="POST">
 										<button class="btn btn-danger btn-xs">
 											Delete comment
 										</button>

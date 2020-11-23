@@ -3,7 +3,7 @@ from mongoengine import *
 
 connect("myDatabase")
 
-class Comment(EmbeddedDocument):
+class Comment(Document):
 	content = StringField()
 
 class Author(EmbeddedDocument):
@@ -14,6 +14,6 @@ class Strategy(Document):
 	name = StringField(required=True)
 	image = StringField(required=False)
 	description = StringField(required=False)
-	comments = ListField(EmbeddedDocumentField(Comment))
+	comments = ListField(ReferenceField(Comment, reverse_delete_rule=PULL))
 
 Strats = Strategy.objects
