@@ -1,0 +1,2 @@
+FLASK_APP=strategy_app
+FLASK_ENV=development
