@@ -16,7 +16,6 @@
 				<img class="img-responsive" src="{{strat.image}}" >
 				
 				<div class="caption-full">
-					<h4 class="pull-right">$9.00/night</h4>
 					<h4><a>{{strat.name }}</a></h4>
 					<p> {{strat.description}} </p>
 					<p><em>Submitted by {{strat.name }}</em></p>
@@ -28,48 +27,52 @@
 			</div>
 
 			<div class="well">
-				<form class="form-inline">
+				<form class="form-inline" id="pricing-form" action="/strategies/{{strat.id}}/prices" method="POST">
 						<div class="form-group">
-							<label for="exampleInputName2">Strike</label>
-							<input type="number" class="form-control" id="K" placeholder="100">
+							<label for="K">Strike</label>
+							<input type="number" step="0.01" class="form-control" name="K" placeholder="100">
 						</div>
 						<div class="form-group">
-							<label for="exampleInputEmail2">Spot</label>
-							<input type="number" class="form-control" id="S" placeholder="102">
+							<label for="S">Spot</label>
+							<input type="number" step="0.01" class="form-control" name="S" placeholder="100">
 						</div>
 						<div class="form-group">
-							<label for="exampleInputName2">Rate</label>
-							<input type="number" class="form-control" id="K" placeholder="100">
+							<label for="r">Rate</label>
+							<input type="number" step="0.001" class="form-control" name="r" placeholder="0.01 as 1%">
 						</div>
 						<div class="form-group">
-							<label for="exampleInputEmail2">Vol</label>
-							<input type="number" class="form-control" id="S" placeholder="102">
+							<label for="sigma">Vol</label>
+							<input type="number" step="0.001" class="form-control" name="sigma" placeholder="0.2 as 20%">
 						</div>
 						<div class="form-group">
-							<label for="exampleInputName2">Maturity</label>
-							<input type="number" class="form-control" id="K" placeholder="100">
+							<label for="t">Maturity</label>
+							<input type="number" step="0.01" class="form-control" name="t" placeholder="1 as 1 year">
 						</div>
 						<button type="submit" class="btn btn-warning">Price</button>				
 				</form>
 			</div>
 
 			<div class="well">
-				<div class="text-right">
+				<!-- <div class="text-right">
 					<a class="btn btn-success" href="/strategies/{{strat.id}}/comments/new" >Add New Comment!</a>
-				</div>
+				</div> -->
 				<hr>
-				{% for comment in strat.comments: %}
+				{% for price in strat.prices: %}
 					<div class="row">
 						<div class="col-md-12">
 							<strong>{{strat.name}}</strong>
-							<span class="pull-right">10 days ago</span>
 							<div class="text-right">
-								<span class="pull-left">{{comment.content}}</span>
+								<span class="pull-left">Spot {{"{:.2f}".format(price.S)}} &nbsp;</span>
+								<span class="pull-left"> Strike {{"{:.2f}".format(price.K)}} &nbsp;</span>
+								<span class="pull-left"> Rate {{"{:.2f}".format(price.r)}} &nbsp;</span>
+								<span class="pull-left"> Vol {{"{:.2f}".format(price.sigma)}} &nbsp;</span>
+								<span class="pull-left"> Maturity {{"{:.2f}".format(price.t)}} &nbsp;</span>
+								<span class="pull-left"> Price {{"{:.5f}".format(price.C)}}</span>
 								{% if True:%}
-									<a class="btn btn-warning btn-xs" href="/strategies/{{strat.id}}/comments/{{comment.id}}/edit" >Edit Comment!</a>
-									<form id="delete-form" action="/strategies/{{strat.id}}/comments/{{comment.id}}/delete" method="POST">
+									<!-- <a class="btn btn-warning btn-xs" href="/strategies/{{strat.id}}/comments/{{price.id}}/edit" >Edit Comment!</a> -->
+									<form id="delete-form" action="/strategies/{{strat.id}}/prices/{{price.id}}/delete" method="POST">
 										<button class="btn btn-danger btn-xs">
-											Delete comment
+											Delete price
 										</button>
 									</form>
 								{%endif%}

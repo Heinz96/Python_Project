@@ -4,6 +4,7 @@ from extensions import *
 from flask_bootstrap import Bootstrap
 from strategies import main
 from comments import second
+from prices import third
 
 
 
@@ -15,7 +16,7 @@ Bootstrap(app)
 
 app.register_blueprint(main)
 app.register_blueprint(second, url_prefix="/strategies/<_id>/comments")
-  
+app.register_blueprint(third, url_prefix="/strategies/<_id>/prices")  
 
 if __name__ == '__main__':
    app.run(debug=True)

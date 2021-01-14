@@ -3,6 +3,14 @@ from mongoengine import *
 
 connect("myDatabase")
 
+class Price(Document):
+	S = DecimalField(precision=5)
+	K = DecimalField(precision=5)
+	r = DecimalField(precision=5)
+	sigma = DecimalField(precision=5)
+	t = DecimalField(precision=5)
+	C = DecimalField(precision=5)
+
 class Comment(Document):
 	content = StringField()
 
@@ -15,5 +23,6 @@ class Strategy(Document):
 	image = StringField(required=False)
 	description = StringField(required=False)
 	comments = ListField(ReferenceField(Comment, reverse_delete_rule=PULL))
+	prices = ListField(ReferenceField(Price, reverse_delete_rule=PULL))
 
 Strats = Strategy.objects
