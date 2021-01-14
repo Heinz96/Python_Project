@@ -11,6 +11,8 @@ class Price(Document):
 	sigma = DecimalField(precision=5)
 	t = DecimalField(precision=5)
 	C = DecimalField(precision=5)
+	Coupon = DecimalField(precision=5)
+	Barrier = DecimalField(precision=5)
 
 class Comment(Document):
 	content = StringField()

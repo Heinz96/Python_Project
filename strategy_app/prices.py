@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from extensions import *
 from models.strategy import *
 from pricing.Black_Scholes import *
+from pricing.autocall import *
 
 third = Blueprint("third", __name__)
 
@@ -18,18 +19,26 @@ def price_post(_id=None):
     r=float(request.form["r"])/100
     sigma=float(request.form["sigma"])/100
     t=float(request.form["t"])
+
     if Option=="Call":
         C = call(S, K, sigma, r, t)
+        newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C).save()
     elif Option =="Put":
         C = put(S, K, sigma, r, t)
-    newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C).save()
+        newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C).save()
+    elif Option=="Autocall":
+        Coupon=float(request.form["Coupon"])
+        Barrier=float(request.form["Barrier"])
+        C = autocall_pricing(np, 10**6, r, sigma, t, S, K, Coupon, Barrier)
+        newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C,Coupon=Coupon,Barrier=Barrier).save()
+
     strat = Strategy.objects(id=_id).first()
     strat.prices.append(newPrice)
     strat.save()
     for strat in Strats:
         strat.reload()
     
-    print(S, K, r, sigma, t, C, Option)
+    print(S, K, r, sigma, t, C, Option, Coupon, Barrier)
     return redirect("/strategies/" + _id)
 
 # @second.route("/<comment_id>/edit")

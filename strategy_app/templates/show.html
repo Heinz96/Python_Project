@@ -34,39 +34,61 @@
 
 			<div class="well">
 				<form class="form-inline" id="pricing-form" action="/strategies/{{strat.id}}/prices" method="POST">
+					
 					<label for="Option">Option type</label>
 					<!-- The value for `for=""` and `id=""` has to be same. -->
 					<select id="Option" name="Option" class="form-control">
-						<option value="Call">Call</option>
-						<option value="Put">Put</option>
+						{%if strat.name=="Option Pricer"%}
+							<option value="Call">Call</option>
+							<option value="Put">Put</option>
+						{%elif strat.name=="Autocall":%}
+							<option value="Autocall">Autocall</option>
+						{%endif%}
 					</select>
+					
 					<div class="form-group">
 						<label for="K">Strike</label>
-						<input type="number" step="0.01" class="form-control" name="K" placeholder="100">
+						<input type="number" step="0.01" class="form-control" name="K" placeholder="100" required>
 					</div>
 					<div class="form-group">
 						<label for="S">Spot</label>
-						<input type="number" step="0.01" class="form-control" name="S" placeholder="100">
+						<input type="number" step="0.01" class="form-control" name="S" placeholder="100" required>
 						
 					</div>
 					<div class="form-group">
 						<label for="r">Rate</label>
 						<div class="input-group">
-						<input type="number" step="0.001" class="form-control" name="r" placeholder="1%">
+						<input type="number" step="0.001" class="form-control" name="r" placeholder="1%" required>
 						<div class="input-group-addon">%</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="sigma">Vol</label>
 						<div class="input-group">
-						<input type="number" step="0.001" class="form-control" name="sigma" placeholder="20%">
+						<input type="number" step="0.001" class="form-control" name="sigma" placeholder="20%" required>
 						<div class="input-group-addon">%</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="t">Maturity</label>
-						<input type="number" step="0.01" class="form-control" name="t" placeholder="1 year">
-					</div>
+					
+					{%if strat.name == "Autocall":%}
+						<div class="form-group">
+							<label for="t">Maturity</label>
+							<input type="number" class="form-control" name="t" placeholder="1 year" min="2" required>
+						</div>
+						<div class="form-group">
+							<label for="Coupon">Coupon</label>
+							<input type="number" step="0.01" class="form-control" name="Coupon" placeholder="6" required>
+						</div>
+						<div class="form-group">
+							<label for="Barrier">Barrier</label>
+							<input type="number" step="0.01" class="form-control" name="Barrier" placeholder="90" required>
+						</div>
+					{%else:%}
+						<div class="form-group">
+							<label for="t">Maturity</label>
+							<input type="number" step="0.01" class="form-control" name="t" placeholder="1 year" required>
+						</div>
+					{%endif%}
 					<button type="submit" class="btn btn-warning">Price</button>				
 				</form>
 			</div>
@@ -90,6 +112,10 @@
 								{% if price.Option=="Call":%}
 									<span class="pull-left label label-primary"> Price {{"{:.5f}".format(price.C)}}</span>
 								{%elif price.Option=="Put":%}
+									<span class="pull-left label label-danger"> Price {{"{:.5f}".format(price.C)}}</span>
+								{%elif price.Option=="Autocall"%}
+									<span class="pull-left"> Coupon {{"{:.2f}".format(price.Coupon)}} &nbsp;</span>
+									<span class="pull-left"> Barrier {{"{:.2f}".format(price.Barrier)}} &nbsp;</span>
 									<span class="pull-left label label-danger"> Price {{"{:.5f}".format(price.C)}}</span>
 								{%endif%}
 								{% if True:%}
