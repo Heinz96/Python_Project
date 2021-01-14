@@ -1,14 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 import random 
-from .extensions import *
+from extensions import *
 from flask_bootstrap import Bootstrap
-from .strategies import main
-from .comments import second
+from strategies import main
+from comments import second
 
 
 
 app = Flask(__name__)
-app.config.from_object("strategy_app.settings")
+# app.config.from_object("settings")
+app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
 mongo.init_app(app)
 Bootstrap(app)
 
