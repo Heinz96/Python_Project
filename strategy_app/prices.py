@@ -12,20 +12,24 @@ third = Blueprint("third", __name__)
 
 @third.route("", methods=["POST"])
 def price_post(_id=None):
+    Option=request.form["Option"]
     S=float(request.form["S"])
     K=float(request.form["K"])
-    r=float(request.form["r"])
-    sigma=float(request.form["sigma"])
+    r=float(request.form["r"])/100
+    sigma=float(request.form["sigma"])/100
     t=float(request.form["t"])
-    C = call(S, K, sigma, r, t)
-    newPrice = Price(S=S,K=K,r=r,sigma=sigma,t=t,C=C).save()
+    if Option=="Call":
+        C = call(S, K, sigma, r, t)
+    elif Option =="Put":
+        C = put(S, K, sigma, r, t)
+    newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C).save()
     strat = Strategy.objects(id=_id).first()
     strat.prices.append(newPrice)
     strat.save()
     for strat in Strats:
         strat.reload()
     
-    print(S, K, r, sigma, t, C)
+    print(S, K, r, sigma, t, C, Option)
     return redirect("/strategies/" + _id)
 
 # @second.route("/<comment_id>/edit")

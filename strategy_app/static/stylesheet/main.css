@@ -1,3 +1,12 @@
 #jumbo1 {
     text-align:center;
 }
+
+.form-inline .form-control{
+    width:6em;
+}
+
+.form-inline .input-group>.form-control {
+    width:5em;
+}
+

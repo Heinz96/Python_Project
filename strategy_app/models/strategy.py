@@ -4,6 +4,7 @@ from mongoengine import *
 connect("myDatabase")
 
 class Price(Document):
+	Option = StringField()
 	S = DecimalField(precision=5)
 	K = DecimalField(precision=5)
 	r = DecimalField(precision=5)

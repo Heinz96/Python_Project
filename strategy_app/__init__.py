@@ -5,12 +5,16 @@ from flask_bootstrap import Bootstrap
 from strategies import main
 from comments import second
 from prices import third
+from six.moves import urllib
 
 
 
 app = Flask(__name__)
 # app.config.from_object("settings")
-app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
+username = urllib.parse.quote_plus('enzols')
+password = urllib.parse.quote_plus('ozneNon@m96')
+client = "mongodb+srv://%s:%s@cluster0.fnjla.mongodb.net/python_project?retryWrites=true&w=majority" % (username, password)
+app.config["MONGO_URI"] = client
 mongo.init_app(app)
 Bootstrap(app)
 
