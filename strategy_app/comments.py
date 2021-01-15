@@ -1,8 +1,11 @@
+#Comment routes, not used in the app but can be updated if needed
+
 from flask import Blueprint, render_template, request, redirect, url_for
 from extensions import *
 from models.strategy import *
 
 second = Blueprint("second", __name__)
+
 
 @second.route("/new")
 def comment_new(_id=None):

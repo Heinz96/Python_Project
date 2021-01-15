@@ -7,11 +7,8 @@ from pricing.Monte_Carlo import *
 
 third = Blueprint("third", __name__)
 
-# @third.route("/new")
-# def comment_new(_id=None):
-# 	strat = Strategy.objects(id=_id).first()
-# 	return render_template("comments/new.html", Strat=strat)
 
+#Inserting a price
 @third.route("", methods=["POST"])
 def price_post(_id=None):
     Option=request.form["Option"]
@@ -22,6 +19,7 @@ def price_post(_id=None):
     t=float(request.form["t"])
 
     if Option!="Autocall":
+        #Pricing type only if not autocall, there is no BS formula for Autocalls
         if request.form["Pricing"]=="BS":
             if Option=="Call":
                 C = call(S, K, sigma, r, t)
@@ -29,33 +27,26 @@ def price_post(_id=None):
                 C = put(S, K, sigma, r, t)
         elif request.form["Pricing"]=="MC":
             C = Monte_Carlo(10**6, S, K, r, sigma, t, Option)
+        #Inserting in the database
         newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C).save()
     elif Option=="Autocall":
+        #Inputting coupon and barrier, only in autocall
         Coupon=float(request.form["Coupon"])
         Barrier=float(request.form["Barrier"])
         C = autocall_pricing(np, 10**6, r, sigma, t, S, K, Coupon, Barrier)
         newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C,Coupon=Coupon,Barrier=Barrier).save()
-
+    
+    #Connecting the price to the correct strategy
     strat = Strategy.objects(id=_id).first()
     strat.prices.append(newPrice)
     strat.save()
+    #Reloading the strategies
     for strat in Strats:
         strat.reload()
     return redirect("/strategies/" + _id)
 
-# @second.route("/<comment_id>/edit")
-# def comment_edit(_id=None, comment_id=None):
-# 	comment = Comment.objects(id=comment_id).first()
-# 	strat = Strategy.objects(id=_id).first()
-# 	return render_template("comments/edit.html", Strat=strat, comment=comment)
 
-# @second.route("/<comment_id>", methods=["POST"])
-# def comment_update(_id=None, comment_id=None):
-# 	Comment.objects(id=comment_id).update(content=request.form["content"])
-# 	for strat in Strats:
-# 		strat.reload()
-# 	return redirect("/strategies/" + _id)
-
+#Deleting a price
 @third.route('/<price_id>/delete', methods=["POST"])
 def price_delete(_id=None, price_id=None):
 	Price.objects(id=price_id).delete()
