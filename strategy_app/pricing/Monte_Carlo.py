@@ -9,8 +9,8 @@ Created on Wed Jan 13 22:52:28 2021
 import numpy as np
 
 
-def Monte_Carlo(n_iter, S0, K, r, sigma, T, opt = "call"):
-    if opt == "call": call, put = 1, 0
+def Monte_Carlo(n_iter, S0, K, r, sigma, T, opt = "Call"):
+    if opt == "Call": call, put = 1, 0
     else: call, put = 0, 1
     
     eps = np.random.normal(size = n_iter)

@@ -18,19 +18,19 @@
 				<div class="caption-full">
 					<h4><a>{{strat.name }}</a></h4>
 					<p> {{strat.description}} </p>
-					<p><em>Submitted by {{strat.name }}</em></p>
+					<!-- <p><em>Submitted by {{strat.name }}</em></p>
 						<a class="btn btn-warning" href="/strategies/{{strat.id}}/edit">Edit</a>
 						<form id="delete-form" action="/strategies/{{strat.id}}/delete" method="POST">
 							<button class="btn btn-danger">Delete</button>
-						</form>
+						</form> -->
 				</div>
 			</div>
 
-			<div class="btn-group" role="group" aria-label="...">
+			<!-- <div class="btn-group" role="group" aria-label="...">
 				<button type="button" class="btn btn-default">Left</button>
 				<button type="button" class="btn btn-default">Middle</button>
 				<button type="button" class="btn btn-default">Right</button>
-			</div>
+			</div> -->
 
 			<div class="well">
 				<form class="form-inline" id="pricing-form" action="/strategies/{{strat.id}}/prices" method="POST">
@@ -88,6 +88,12 @@
 							<label for="t">Maturity</label>
 							<input type="number" step="0.01" class="form-control" name="t" placeholder="1 year" required>
 						</div>
+						<label for="Pricing">Pricing</label>
+					<!-- The value for `for=""` and `id=""` has to be same. -->
+						<select id="Pricing" name="Pricing" class="form-control">
+							<option value="BS">BS</option>
+							<option value="MC">MC</option>
+						</select>
 					{%endif%}
 					<button type="submit" class="btn btn-warning">Price</button>				
 				</form>

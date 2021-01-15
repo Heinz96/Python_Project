@@ -3,6 +3,7 @@ from extensions import *
 from models.strategy import *
 from pricing.Black_Scholes import *
 from pricing.autocall import *
+from pricing.Monte_Carlo import *
 
 third = Blueprint("third", __name__)
 
@@ -20,11 +21,14 @@ def price_post(_id=None):
     sigma=float(request.form["sigma"])/100
     t=float(request.form["t"])
 
-    if Option=="Call":
-        C = call(S, K, sigma, r, t)
-        newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C).save()
-    elif Option =="Put":
-        C = put(S, K, sigma, r, t)
+    if Option!="Autocall":
+        if request.form["Pricing"]=="BS":
+            if Option=="Call":
+                C = call(S, K, sigma, r, t)
+            elif Option =="Put":
+                C = put(S, K, sigma, r, t)
+        elif request.form["Pricing"]=="MC":
+            C = Monte_Carlo(10**6, S, K, r, sigma, t, Option)
         newPrice = Price(Option=Option,S=S,K=K,r=r,sigma=sigma,t=t,C=C).save()
     elif Option=="Autocall":
         Coupon=float(request.form["Coupon"])
@@ -37,8 +41,6 @@ def price_post(_id=None):
     strat.save()
     for strat in Strats:
         strat.reload()
-    
-    print(S, K, r, sigma, t, C, Option, Coupon, Barrier)
     return redirect("/strategies/" + _id)
 
 # @second.route("/<comment_id>/edit")
