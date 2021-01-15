@@ -2,6 +2,7 @@
 Project for the Python class
 
 This program will launch the website from your local-host, and allow to price simple put, calls and autocalls and keep a price history.
+We used Flask as the server and mongodb as the database, mongodb being connected remotely through mongo atlas.
 
 ## How to install
 
